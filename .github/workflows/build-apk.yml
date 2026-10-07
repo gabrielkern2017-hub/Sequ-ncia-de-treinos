@@ -1,1 +1,38 @@
-.github/workflows/build-apk.yml
+name: Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Gradle
+        run: |
+          curl -L -o gradle.zip https://services.gradle.org/distributions/gradle-8.7-bin.zip
+          unzip -q gradle.zip
+          echo "$PWD/gradle-8.7/bin" >> "$GITHUB_PATH"
+
+      - name: Extract Android project
+        run: |
+          unzip -q SequenciaTreinos-android.zip
+
+      - name: Build debug APK
+        working-directory: SequenciaTreinos
+        run: gradle --no-daemon assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: SequenciaTreinos-APK
+          path: SequenciaTreinos/app/build/outputs/apk/debug/app-debug.apk
