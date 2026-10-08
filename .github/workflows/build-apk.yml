@@ -17,9 +17,6 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Configurar Android
-        uses: android-actions/setup-android@v3
-
       - name: Instalar Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -37,4 +34,3 @@ jobs:
         with:
           name: SequenciaTreinos-APK
           path: SequenciaTreinos/app/build/outputs/apk/debug/app-debug.apk
-
