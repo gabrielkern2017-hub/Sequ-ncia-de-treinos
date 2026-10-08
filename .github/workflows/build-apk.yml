@@ -37,3 +37,4 @@ jobs:
         with:
           name: SequenciaTreinos-APK
           path: SequenciaTreinos/app/build/outputs/apk/debug/app-debug.apk
+
