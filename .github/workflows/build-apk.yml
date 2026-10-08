@@ -8,30 +8,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Baixar projeto
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Configurar Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Gradle
-        run: |
-          curl -L -o gradle.zip https://services.gradle.org/distributions/gradle-8.7-bin.zip
-          unzip -q gradle.zip
-          echo "$PWD/gradle-8.7/bin" >> "$GITHUB_PATH"
+      - name: Configurar Android
+        uses: android-actions/setup-android@v3
 
-      - name: Extract Android project
-        run: |
-          unzip -q SequenciaTreinos-android.zip
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
 
-      - name: Build debug APK
+      - name: Extrair projeto
+        run: unzip -q SequenciaTreinos-android.zip
+
+      - name: Compilar APK
         working-directory: SequenciaTreinos
-        run: gradle --no-daemon assembleDebug
+        run: gradle assembleDebug
 
-      - name: Upload APK
+      - name: Disponibilizar APK
         uses: actions/upload-artifact@v4
         with:
           name: SequenciaTreinos-APK
